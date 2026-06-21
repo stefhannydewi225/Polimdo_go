@@ -13,16 +13,19 @@ export async function POST(request: Request) {
 
     const { name, latitude, longitude, defaultRadiusMeters } = await request.json();
 
-    if (!name || latitude === undefined || longitude === undefined) {
-      return NextResponse.json({ success: false, message: 'Parameter tidak lengkap.' }, { status: 400 });
+    if (!name) {
+      return NextResponse.json({ success: false, message: 'Nama Ruangan wajib diisi.' }, { status: 400 });
     }
+
+    const finalLat = latitude !== undefined && latitude !== null ? Number(latitude) : 1.479585;
+    const finalLng = longitude !== undefined && longitude !== null ? Number(longitude) : 124.897003;
 
     const room = await prisma.roomLocation.create({
       data: {
         name,
-        latitude: Number(latitude),
-        longitude: Number(longitude),
-        defaultRadiusMeters: Number(defaultRadiusMeters)
+        latitude: finalLat,
+        longitude: finalLng,
+        defaultRadiusMeters: defaultRadiusMeters ? Number(defaultRadiusMeters) : 50
       }
     });
 
@@ -56,17 +59,20 @@ export async function PUT(request: Request) {
 
     const { id, name, latitude, longitude, defaultRadiusMeters } = await request.json();
 
-    if (!id || !name || latitude === undefined || longitude === undefined) {
-      return NextResponse.json({ success: false, message: 'Parameter tidak lengkap.' }, { status: 400 });
+    if (!id || !name) {
+      return NextResponse.json({ success: false, message: 'ID dan Nama Ruangan wajib diisi.' }, { status: 400 });
     }
+
+    const finalLat = latitude !== undefined && latitude !== null ? Number(latitude) : 1.479585;
+    const finalLng = longitude !== undefined && longitude !== null ? Number(longitude) : 124.897003;
 
     const room = await prisma.roomLocation.update({
       where: { id },
       data: {
         name,
-        latitude: Number(latitude),
-        longitude: Number(longitude),
-        defaultRadiusMeters: Number(defaultRadiusMeters)
+        latitude: finalLat,
+        longitude: finalLng,
+        defaultRadiusMeters: defaultRadiusMeters ? Number(defaultRadiusMeters) : 50
       }
     });
 

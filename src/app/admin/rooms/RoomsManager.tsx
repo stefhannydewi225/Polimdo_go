@@ -24,14 +24,14 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
   const [editingId, setEditingId] = useState<string | null>(null);
   
   const [name, setName] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+  const [latitude, setLatitude] = useState('1.479585');
+  const [longitude, setLongitude] = useState('124.897003');
   const [radius, setRadius] = useState('50');
   
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+ 
   const handleStartEdit = (room: Room) => {
     setEditingId(room.id);
     setName(room.name);
@@ -41,33 +41,31 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
     setError(null);
     setSuccess(null);
   };
-
+ 
   const handleCancelEdit = () => {
     setEditingId(null);
     setName('');
-    setLatitude('');
-    setLongitude('');
+    setLatitude('1.479585');
+    setLongitude('124.897003');
     setRadius('50');
     setError(null);
     setSuccess(null);
   };
-
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
+ 
     const latNum = Number(latitude);
     const lngNum = Number(longitude);
     const radNum = Number(radius);
-
+ 
     if (!name.trim()) return setError('Nama ruangan wajib diisi');
-    if (isNaN(latNum) || latNum < -90 || latNum > 90) return setError('Latitude tidak valid (-90 s.d 90)');
-    if (isNaN(lngNum) || lngNum < -180 || lngNum > 180) return setError('Longitude tidak valid (-180 s.d 180)');
     if (isNaN(radNum) || radNum < 5) return setError('Radius minimal 5 meter');
-
+ 
     setIsLoading(true);
-
+ 
     if (editingId) {
       if (isOffline) {
         setRooms(rooms.map(r => r.id === editingId ? { ...r, name, latitude: latNum, longitude: lngNum, defaultRadiusMeters: radNum } : r));
@@ -76,7 +74,7 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
         setIsLoading(false);
         return;
       }
-
+ 
       try {
         const res = await fetch('/api/admin/rooms', {
           method: 'PUT',
@@ -96,7 +94,7 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
       }
       return;
     }
-
+ 
     // Aksi Create
     if (isOffline) {
       const newRoom: Room = {
@@ -109,13 +107,13 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
       setRooms([newRoom, ...rooms]);
       setSuccess('Ruangan berhasil ditambahkan (Mode Simulasi).');
       setName('');
-      setLatitude('');
-      setLongitude('');
+      setLatitude('1.479585');
+      setLongitude('124.897003');
       setRadius('50');
       setIsLoading(false);
       return;
     }
-
+ 
     try {
       const res = await fetch('/api/admin/rooms', {
         method: 'POST',
@@ -128,8 +126,8 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
       setRooms([data.room, ...rooms]);
       setSuccess('Ruangan berhasil disimpan ke database Supabase.');
       setName('');
-      setLatitude('');
-      setLongitude('');
+      setLatitude('1.479585');
+      setLongitude('124.897003');
       setRadius('50');
     } catch (err: any) {
       setError(err.message || 'Terjadi kesalahan sistem.');
@@ -177,7 +175,7 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
               {editingId ? 'Edit Ruangan' : 'Tambah Ruangan'}
             </h3>
             <p className="text-[10px] text-zinc-400 font-medium">
-              {editingId ? 'Update koordinat & radius ruangan.' : 'Definisikan titik koordinat GPS baru.'}
+              {editingId ? 'Update data & radius ruangan.' : 'Definisikan ruangan kelas baru.'}
             </p>
           </div>
           {editingId && (
@@ -213,28 +211,6 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
               placeholder="e.g. Lab RPL 2"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-1.5 border border-zinc-200 rounded-lg text-xs bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Latitude</label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. 1.479585"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-              className="w-full px-3 py-1.5 border border-zinc-200 rounded-lg text-xs bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Longitude</label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. 124.897003"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
               className="w-full px-3 py-1.5 border border-zinc-200 rounded-lg text-xs bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
@@ -283,7 +259,6 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
               <thead>
                 <tr className="bg-zinc-50 border-b border-zinc-200/80 text-zinc-500 font-bold uppercase tracking-wider text-[9px]">
                   <th className="py-2.5 px-4 font-bold">Ruangan</th>
-                  <th className="py-2.5 px-4 font-bold">Titik Koordinat (Lat, Lng)</th>
                   <th className="py-2.5 px-4 font-bold text-center">Default Radius</th>
                   <th className="py-2.5 px-4 font-bold text-center">Aksi</th>
                 </tr>
@@ -296,9 +271,6 @@ export default function RoomsManager({ initialRooms, isOffline }: RoomsManagerPr
                         <MapPin size={14} />
                       </div>
                       {room.name}
-                    </td>
-                    <td className="py-3 px-4 text-zinc-500 font-mono text-[11px]">
-                      {room.latitude.toFixed(6)}, {room.longitude.toFixed(6)}
                     </td>
                     <td className="py-3 px-4 text-center font-bold text-zinc-700">
                       {room.defaultRadiusMeters} m

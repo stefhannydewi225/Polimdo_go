@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  STUDENT
+  LECTURER
+  ADMIN
+}
+
+enum AttendanceSessionStatus {
+  ACTIVE
+  CLOSED
+  EXPIRED
+}
+
+enum AttendanceRecordStatus {
+  VALID
+  REJECTED
+  SICK
+  PERMISSION
+}
+
+enum AttendanceRejectionReason {
+  INVALID_TOKEN
+  QR_EXPIRED
+  SESSION_CLOSED
+  OUT_OF_RADIUS
+  ALREADY_ATTENDED
+  LOCATION_UNAVAILABLE
+  NOT_IN_SCHEDULE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  studentProfile  StudentProfile?
+  lecturerProfile LecturerProfile?
+}
+
+model StudentProfile {
+  id        String @id @default(cuid())
+  userId    String @unique
+  nim       String @unique
+  program   String
+  classId   String?
+
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class     Class? @relation(fields: [classId], references: [id])
+
+  attendanceRecords AttendanceRecord[]
+}
+
+model LecturerProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  nip    String? @unique
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courses            Course[]
+  attendanceSessions AttendanceSession[]
+}
+
+model Course {
+  id         String @id @default(cuid())
+  name       String
+  code       String @unique
+  lecturerId String?
+
+  lecturer   LecturerProfile? @relation(fields: [lecturerId], references: [id])
+  schedules  Schedule[]
+}
+
+model Class {
+  id       String @id @default(cuid())
+  name     String
+  program  String?
+
+  students  StudentProfile[]
+  schedules Schedule[]
+}
+
+model RoomLocation {
+  id           String  @id @default(cuid())
+  name         String
+  latitude     Decimal @db.Decimal(10, 7)
+  longitude    Decimal @db.Decimal(10, 7)
+  defaultRadiusMeters Int @default(50)
+
+  schedules Schedule[]
+}
+
+model Schedule {
+  id        String @id @default(cuid())
+  courseId  String
+  classId   String
+  roomId    String
+
+  dayOfWeek Int
+  startTime String
+  endTime   String
+
+  course Course       @relation(fields: [courseId], references: [id])
+  class  Class        @relation(fields: [classId], references: [id])
+  room   RoomLocation @relation(fields: [roomId], references: [id])
+
+  sessions AttendanceSession[]
+}
+
+model AttendanceSession {
+  id          String @id @default(cuid())
+  scheduleId  String
+  lecturerId  String
+
+  tokenHash      String
+  tokenExpiresAt DateTime
+  passcode       String?
+
+  startAt      DateTime
+  endAt        DateTime
+  radiusMeters Int
+
+  latitude     Decimal? @db.Decimal(10, 7)
+  longitude    Decimal? @db.Decimal(10, 7)
+
+  status AttendanceSessionStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schedule Schedule        @relation(fields: [scheduleId], references: [id])
+  lecturer LecturerProfile @relation(fields: [lecturerId], references: [id])
+
+  records AttendanceRecord[]
+}
+
+model AttendanceRecord {
+  id        String @id @default(cuid())
+  sessionId String
+  studentId String
+
+  checkedInAt DateTime @default(now())
+
+  studentLatitude  Decimal? @db.Decimal(10, 7)
+  studentLongitude Decimal? @db.Decimal(10, 7)
+  distanceMeters   Float?
+
+  status AttendanceRecordStatus
+  rejectionReason AttendanceRejectionReason?
+
+  userAgent String?
+  ipAddress String?
+
+  session AttendanceSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student StudentProfile    @relation(fields: [studentId], references: [id])
+
+  @@unique([sessionId, studentId])
+}

@@ -88,7 +88,8 @@ export default async function LecturerSessionQrPage({ params, searchParams }: Qr
   // Hitung durasi kedaluwarsa QR Code
   const expiryTime = new Date(sessionDetails.tokenExpiresAt).toLocaleTimeString('id-ID', {
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    timeZone: 'Asia/Makassar'
   });
 
   return (

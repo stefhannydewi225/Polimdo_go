@@ -131,7 +131,8 @@ export default async function LecturerSessionPrintPage({ params }: PrintPageProp
       timeDisplay = new Date(record.checkedInAt).toLocaleTimeString('id-ID', {
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit'
+        second: '2-digit',
+        timeZone: 'Asia/Makassar'
       }) + ' WITA';
       
       distanceDisplay = record.distanceMeters !== null ? `${Number(record.distanceMeters).toFixed(1)} m` : 'Manual';
@@ -174,7 +175,8 @@ export default async function LecturerSessionPrintPage({ params }: PrintPageProp
     weekday: 'long',
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
+    timeZone: 'Asia/Makassar'
   });
 
   return (
@@ -273,7 +275,7 @@ export default async function LecturerSessionPrintPage({ params }: PrintPageProp
       <div className="flex justify-end font-sans">
         <div className="text-center space-y-16 text-xs w-64">
           <div>
-            <p>Manado, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p>Manado, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Makassar' })}</p>
             <p className="font-bold">Dosen Pengampu,</p>
           </div>
           <div>

@@ -106,7 +106,7 @@ export default function NewSessionForm({ schedules, isOffline }: NewSessionFormP
         setIsLoading(false);
       } else {
         // Redirect ke halaman QR Code sesi yang baru dibuat
-        router.push(`/lecturer/sessions/${data.sessionId}/qr`);
+        router.push(`/lecturer/sessions/${data.sessionId}/qr?token=${data.token}`);
         router.refresh();
       }
     } catch (err) {

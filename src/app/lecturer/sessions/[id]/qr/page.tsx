@@ -65,9 +65,10 @@ export default async function LecturerSessionQrPage({ params, searchParams }: Qr
   }
 
   // Buat URL scan presensi untuk disematkan di QR Code
-  // Contoh: http://localhost:3000/student/attendance/scan?token=xxxx
+  // Menggunakan passcode (6 digit) agar QR Code tetap bisa digenerate dari history list tanpa token mentah
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const scanUrl = `${appUrl}/student/attendance/scan?token=${plainToken}`;
+  const tokenForQr = sessionDetails.passcode || plainToken;
+  const scanUrl = `${appUrl}/student/attendance/scan?token=${tokenForQr}`;
 
   // Generate QR Code data URL (base64 image) server-side
   let qrCodeDataUrl = '';

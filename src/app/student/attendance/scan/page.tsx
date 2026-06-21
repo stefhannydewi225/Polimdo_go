@@ -304,15 +304,6 @@ function ScanAttendanceContent() {
                       onError={(err) => console.error(err)}
                     />
                   </div>
-
-                  <div className="pt-2">
-                    <button
-                      onClick={() => handleScan('mock-token-demo')}
-                      className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold border border-indigo-200 bg-indigo-50 px-3 py-1.5 rounded-lg"
-                    >
-                      Simulasi Scan Token Demo (Offline)
-                    </button>
-                  </div>
                 </div>
               )
             ) : (

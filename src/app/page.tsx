@@ -16,6 +16,8 @@ export default async function Home() {
     } else if (role === 'ADMIN') {
       redirect('/admin/dashboard');
     }
+  } else {
+    redirect('/login');
   }
   return (
     <div className="flex-1 flex flex-col justify-between py-12 px-6 sm:px-12 md:px-24">

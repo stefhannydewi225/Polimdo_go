@@ -41,11 +41,19 @@ export default function NewSessionForm({ schedules, isOffline }: NewSessionFormP
       setGpsStatus('acquiring');
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCoords({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-          setGpsStatus('locked');
+          // Jika akurasi lokasi buruk (> 150 meter), kemungkinan besar menggunakan Laptop/IP Geolocation.
+          // Kita abaikan koordinat laptop tersebut agar sistem otomatis menggunakan fallback lokasi kampus.
+          if (position.coords.accuracy && position.coords.accuracy <= 150) {
+            setCoords({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+            setGpsStatus('locked');
+          } else {
+            console.warn("Akurasi GPS rendah (terdeteksi Laptop/PC):", position.coords.accuracy);
+            setCoords(null);
+            setGpsStatus('error');
+          }
         },
         (error) => {
           console.warn("Gagal mendapatkan lokasi GPS Dosen:", error);
@@ -146,6 +154,8 @@ export default function NewSessionForm({ schedules, isOffline }: NewSessionFormP
                 ? 'Lokasi Dosen Terkunci (Presensi Dinamis)' 
                 : gpsStatus === 'acquiring'
                 ? 'Mencari Sinyal GPS...'
+                : coords === null && gpsStatus === 'error'
+                ? 'GPS Laptop/PC Terdeteksi (Menggunakan Lokasi Kampus)'
                 : 'GPS Nonaktif / Izin Ditolak'}
             </span>
             <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
@@ -153,7 +163,7 @@ export default function NewSessionForm({ schedules, isOffline }: NewSessionFormP
                 ? `Posisi Dosen: ${coords?.latitude.toFixed(6)}, ${coords?.longitude.toFixed(6)}. Presensi mahasiswa akan divalidasi terhadap lokasi Anda saat ini.` 
                 : gpsStatus === 'acquiring'
                 ? 'Mengunci posisi GPS perangkat untuk mengaktifkan presensi dinamis...'
-                : 'Menggunakan koordinat default ruangan kelas di database.'}
+                : 'Menggunakan koordinat default gedung kampus (Mahasiswa dapat absen selama berada di area kampus).'}
             </p>
           </div>
         </div>

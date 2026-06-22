@@ -352,10 +352,18 @@ export default function AttendanceRecordsManager({
               </thead>
               <tbody className="divide-y divide-zinc-100">
                 {filteredRecords.map((rec) => {
+                  const checkInDate = new Date(rec.checkedInAt).toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'Asia/Makassar'
+                  });
                   const checkInTime = new Date(rec.checkedInAt).toLocaleTimeString('id-ID', {
                     hour: '2-digit',
                     minute: '2-digit',
-                    second: '2-digit'
+                    second: '2-digit',
+                    timeZone: 'Asia/Makassar'
                   });
                   const isEditing = editingRecordId === rec.id;
 
@@ -368,8 +376,9 @@ export default function AttendanceRecordsManager({
                       </td>
                       
                       {/* Checked in time */}
-                      <td className="py-3 px-4 text-zinc-500 font-medium">
-                        {checkInTime} WITA
+                      <td className="py-3 px-4 text-zinc-500 font-medium space-y-0.5">
+                        <p className="font-semibold text-zinc-700">{checkInDate}</p>
+                        <p className="text-[10px] text-zinc-400 font-semibold">{checkInTime} WITA</p>
                       </td>
                       
                       {/* Distance */}

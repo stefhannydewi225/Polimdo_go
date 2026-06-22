@@ -128,12 +128,20 @@ export default async function LecturerSessionPrintPage({ params }: PrintPageProp
     let distanceDisplay = '-';
 
     if (record) {
-      timeDisplay = new Date(record.checkedInAt).toLocaleTimeString('id-ID', {
+      const datePart = new Date(record.checkedInAt).toLocaleDateString('id-ID', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'Asia/Makassar'
+      });
+      const timePart = new Date(record.checkedInAt).toLocaleTimeString('id-ID', {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         timeZone: 'Asia/Makassar'
-      }) + ' WITA';
+      });
+      timeDisplay = `${datePart}, ${timePart} WITA`;
       
       distanceDisplay = record.distanceMeters !== null ? `${Number(record.distanceMeters).toFixed(1)} m` : 'Manual';
 

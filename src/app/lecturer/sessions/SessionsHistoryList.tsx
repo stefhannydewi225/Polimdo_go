@@ -147,11 +147,13 @@ export default function SessionsHistoryList({ initialSessions, isOffline }: Sess
               weekday: 'long',
               day: 'numeric',
               month: 'long',
-              year: 'numeric'
+              year: 'numeric',
+              timeZone: 'Asia/Makassar'
             });
             const timeFormatted = new Date(session.createdAt).toLocaleTimeString('id-ID', {
               hour: '2-digit',
-              minute: '2-digit'
+              minute: '2-digit',
+              timeZone: 'Asia/Makassar'
             });
 
             return (

@@ -120,11 +120,13 @@ export default async function StudentHistory() {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
+                timeZone: 'Asia/Makassar'
               });
               const timeStr = new Date(rec.checkedInAt).toLocaleTimeString('id-ID', {
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
+                timeZone: 'Asia/Makassar'
               });
               const isValid = rec.status === 'VALID';
 

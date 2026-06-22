@@ -93,11 +93,6 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        {/* Info Box */}
-        <div className="p-4 bg-indigo-50/50 border border-indigo-200/50 rounded-xl text-xs text-indigo-900 leading-relaxed">
-          <strong>Perhatian:</strong> Untuk MVP skripsi ini, konfigurasi master data awal (mahasiswa, dosen, ruangan, jadwal) direkomendasikan melalui file <code>prisma/seed.ts</code> untuk efisiensi demo. Form manajemen CRUD di atas dapat digunakan untuk memodifikasi atau memeriksa data secara manual.
-        </div>
-
       </div>
     </AppShell>
   );

@@ -73,37 +73,37 @@ export const authOptions: AuthOptions = {
           
           const { email, password } = credentials;
           
-          if (email === "mhs1@presensigo.com" && (password === "mhs123" || password === "22021001")) {
+          if (email === "mhs1.polimdo@gmail.com" && (password === "mhs123" || password === "22021001")) {
             return {
               id: "mock-mhs-1",
               name: "Michael Jackson",
-              email: "mhs1@presensigo.com",
+              email: "mhs1.polimdo@gmail.com",
               role: "STUDENT",
               profileId: "mock-student-id",
               nim: "22021001",
-              image: getGravatarUrl("mhs1@presensigo.com"),
+              image: getGravatarUrl("mhs1.polimdo@gmail.com"),
             };
           }
           
-          if (email === "dosen@presensigo.com" && (password === "dosen123" || password === "0012038401")) {
+          if (email === "dosen.polimdo@gmail.com" && (password === "dosen123" || password === "0012038401")) {
             return {
               id: "mock-dosen-1",
               name: "Dr. Ir. Dosen Elektro, M.T.",
-              email: "dosen@presensigo.com",
+              email: "dosen.polimdo@gmail.com",
               role: "LECTURER",
               profileId: "mock-lecturer-id",
               nip: "0012038401",
-              image: getGravatarUrl("dosen@presensigo.com"),
+              image: getGravatarUrl("dosen.polimdo@gmail.com"),
             };
           }
           
-          if (email === "admin@presensigo.com" && password === "admin123") {
+          if (email === "admin.polimdo@gmail.com" && password === "admin123") {
             return {
               id: "mock-admin-1",
               name: "Admin Elektro",
-              email: "admin@presensigo.com",
+              email: "admin.polimdo@gmail.com",
               role: "ADMIN",
-              image: getGravatarUrl("admin@presensigo.com"),
+              image: getGravatarUrl("admin.polimdo@gmail.com"),
             };
           }
           

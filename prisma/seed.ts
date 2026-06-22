@@ -28,7 +28,7 @@ async function main() {
   await prisma.user.create({
     data: {
       name: 'Admin Jurusan Teknik Elektro',
-      email: 'admin@presensigo.com',
+      email: 'admin.polimdo@gmail.com',
       passwordHash: adminPasswordHash,
       role: UserRole.ADMIN,
     },
@@ -38,7 +38,7 @@ async function main() {
   const lecturerUser = await prisma.user.create({
     data: {
       name: 'Dr. Ir. Dosen Elektro, M.T.',
-      email: 'dosen@presensigo.com',
+      email: 'dosen.polimdo@gmail.com',
       passwordHash: lecturerPasswordHash,
       role: UserRole.LECTURER,
       lecturerProfile: {
@@ -63,9 +63,9 @@ async function main() {
 
   // 4. Buat User Mahasiswa & Profil (Password Mahasiswa adalah NIM-nya sendiri)
   const studentsData = [
-    { name: 'Michael Jackson', email: 'mhs1@presensigo.com', nim: '22021001' },
-    { name: 'Steve Rogers', email: 'mhs2@presensigo.com', nim: '22021002' },
-    { name: 'Natasha Romanoff', email: 'mhs3@presensigo.com', nim: '22021003' },
+    { name: 'Michael Jackson', email: 'mhs1.polimdo@gmail.com', nim: '22021001' },
+    { name: 'Steve Rogers', email: 'mhs2.polimdo@gmail.com', nim: '22021002' },
+    { name: 'Natasha Romanoff', email: 'mhs3.polimdo@gmail.com', nim: '22021003' },
   ];
 
   for (const student of studentsData) {
@@ -123,11 +123,11 @@ async function main() {
 
   console.log('Seeding selesai dengan sukses!');
   console.log('Informasi Akun Demo:');
-  console.log('1. Admin   : admin@presensigo.com / admin123');
-  console.log('2. Dosen   : dosen@presensigo.com / 0012038401 (NIP)');
-  console.log('3. Mhs 1   : mhs1@presensigo.com / 22021001 (NIM)');
-  console.log('4. Mhs 2   : mhs2@presensigo.com / 22021002 (NIM)');
-  console.log('5. Mhs 3   : mhs3@presensigo.com / 22021003 (NIM)');
+  console.log('1. Admin   : admin.polimdo@gmail.com / admin123');
+  console.log('2. Dosen   : dosen.polimdo@gmail.com / 0012038401 (NIP)');
+  console.log('3. Mhs 1   : mhs1.polimdo@gmail.com / 22021001 (NIM)');
+  console.log('4. Mhs 2   : mhs2.polimdo@gmail.com / 22021002 (NIM)');
+  console.log('5. Mhs 3   : mhs3.polimdo@gmail.com / 22021003 (NIM)');
   console.log(`Mata Kuliah: ${coursePBP.name} (${coursePBP.code})`);
   console.log(`Kelas      : ${class4A.name}`);
   console.log(`Ruangan    : ${roomLab.name} (Radius: ${roomLab.defaultRadiusMeters}m)`);

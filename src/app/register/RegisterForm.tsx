@@ -51,6 +51,13 @@ export default function RegisterForm({ classes }: RegisterFormProps) {
       return;
     }
 
+    // Validasi domain email resmi (sementara hanya @gmail.com)
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      setError('Registrasi ditolak. Hanya email dengan domain @gmail.com yang diperbolehkan saat ini.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -142,11 +149,12 @@ export default function RegisterForm({ classes }: RegisterFormProps) {
         <input
           type="email"
           required
-          placeholder="contoh@presensigo.com"
+          placeholder="contoh@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full px-3 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-zinc-50 text-zinc-800"
         />
+        <p className="mt-1 text-[10px] text-zinc-400">Harap gunakan alamat email @gmail.com aktif Anda.</p>
       </div>
 
       {/* Form Tambahan Dosen */}

@@ -24,6 +24,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // Validasi domain email resmi (sementara hanya @gmail.com)
+    const emailLower = email.toLowerCase();
+    if (!emailLower.endsWith('@gmail.com')) {
+      return NextResponse.json(
+        { success: false, message: 'Registrasi ditolak. Hanya email dengan domain @gmail.com yang diperbolehkan saat ini.' },
+        { status: 400 }
+      );
+    }
+
+
     // 2. Cek Koneksi Database
     let isDbOffline = false;
     try {
